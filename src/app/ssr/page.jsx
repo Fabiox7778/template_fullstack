@@ -1,3 +1,4 @@
+import SeriesList from '@components/SeriesList'
 import axios from 'axios';
 
 export default async function GetPage() {
@@ -24,11 +25,7 @@ export default async function GetPage() {
         Axios.get direto na API e salva SessionStorage, mas rodando no
         servidor, a api-key nunca chega no navegador
       </p>
-      <ul>
-        {series.map((item) => (
-          <li key={item.id}>{item.title}</li>
-        ))}
-      </ul>
+      <SeriesList series={series} />
     </main>
   );
 }
