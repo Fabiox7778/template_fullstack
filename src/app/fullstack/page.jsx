@@ -24,7 +24,7 @@ export default function ReadPage() {
             }
         }
         buscarSeries()
-    })
+    }, [])
     return (
         <main>
             <h2>Read</h2>

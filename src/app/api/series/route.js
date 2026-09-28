@@ -12,7 +12,24 @@ export async function GET(req) {
         return NextResponse.json(resp.data);
     } catch (error) {
         const status = error.response?.status || 500;
-        const data = error.response?.data || {error: 'Erro ao buscar as séries'};
+        const data = error.response?.data || { error: 'Erro ao buscar as séries' };
+
+        return NextResponse.json(data, { status });
+    }
+}
+
+export async function POST(req) {
+    const body = await req.json();
+
+    try {
+        const resp = await axios.post(process.env.API_URL_SERIES, body, {
+            headers: { 'x-api-key': process.env.API_KEY },
+        });
+
+        return NextResponse.json(resp.data);
+    } catch (error) {
+        const status = 500;
+        const data = { error: 'Erro ao criar série' };
 
         return NextResponse.json(data, { status });
     }
