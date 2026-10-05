@@ -15,5 +15,5 @@ export default function SeriesList({ series }) {
           <li key={item.id}>{item.title}</li>
         ))}
       </ul>
-    )
+    );
 }

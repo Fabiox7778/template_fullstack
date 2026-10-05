@@ -1,6 +1,6 @@
 'use client';
 
-import FormModal from "@/components/formModal";
+import FormModal from "@/components/FormModal";
 import { Button } from "antd";
 import axios from "axios";
 import { useState } from "react";
