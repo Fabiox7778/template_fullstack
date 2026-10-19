@@ -1,5 +1,6 @@
 'use client'
 
+import ConfirmModal from "@/components/ConfirmModal";
 import FormModal from "@/components/FormModal";
 import { Button, Card, Skeleton } from "antd";
 import axios from "axios";
@@ -33,9 +34,39 @@ export default function ReadByIdPage() {
         buscarSerie();
     }, [id]);
 
+    const handleUpdate = async () => {
+        setSaving(true);
+
+        try {
+            await axios.put(`/api/series/${id}`, values);
+            setSerie({ ...serie, ...values });
+            setEditOpen(false);
+            toast.success('Série atualizada com sucesso.', { id: 'update-success' });
+        } catch (error) {
+            toast.error('Erro ao atualizar a série.', { id: 'update-error' });
+        } finally {
+            setSaving(false);
+        }
+    };
+
+    const handleDelete = async () => {
+        setDeleting(true);
+
+        try {
+            await axios.delete(`/api/series/${id}`, values);
+            setSerie({ ...serie, ...values });
+            setDeleteOpen(false);
+            toast.success('Série excluída com sucesso.', { id: 'delete-success' });
+        } catch (error) {
+            toast.error('Erro ao excluir a série.', { id: 'delete-error' });
+        } finally {
+            setDeleting(false);
+        }
+    };
+
     return (
         <main>
-            <h2>Get By Id - Read</h2>
+            <h2>Get By Id - Read`{serie && ` - ${serie.title}`}</h2>
             <p>O navegador busca, edita e exclui pelo /api/series/[id] (nosso route.js); o servidor fala com a API usando a api-key privada.</p>
             <p>Abra o DevTools - Network: aparece a série (GET/PUT/DELETE), sem x-api-key.</p>
 
@@ -66,7 +97,16 @@ export default function ReadByIdPage() {
                             openModal={editOpen}
                             serie={serie}
                             confirmLoading={saving}
+                            onSubmit={handleUpdate}
                             onCancel={() => setEditOpen(false)}
+                        />
+
+                        <confirmDelete
+                            openModal={deleteOpen}
+                            serie={serie}
+                            confirmLoading={deleting}
+                            onSubmit={handleDelete}
+                            onCancel={() => setDeleteOpen(false)}
                         />
                     </>
                 )
